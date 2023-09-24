@@ -1,0 +1,59 @@
+<div class="chart-container">
+  <div id="chart1" class="chart" ></div>
+  <div id="chart2" class="chart"></div>
+  <div id="chart3" class="chart"></div>
+  <div id="chart4" class="chart"></div>
+  <div id="chart5" class="chart"></div>
+  <div id="chart6" class="chart"></div>
+  <canvas id="line-chart" class="chart" style="height: 245px;"></canvas>
+</div>
+<script>
+  {% if data %}
+  var gaugeData = [
+  ['Temp', {{data['temp']}}],
+['pH', {{data['ph']}}],
+['EC', {{data['ec']}}],
+['TDS', {{data['tds']}}],
+['Turbidity', {{data['turbidity']}}],
+['Humidity', {{data['humidity']}}]
+];
+console.log(gaugeData);
+{% endif %}
+
+var chartColors = ['#60B044', '#F6C600', '#F97600', '#FF0000', '#9C27B0', '#03A9F4'];
+
+var gaugeOptions = [
+{ min: 0, max: 100},
+{ min: 0, max: 14 },
+{ min: 0, max: 25000 },
+{ min: 0, max: 1500 },
+{ min: 0, max: 5 },
+{ min: 0, max: 100 }
+];
+gaugeData.forEach(function(item, index) {
+var chart = c3.generate({
+  bindto: '#chart' + (index + 1),
+  data: {
+    columns: [
+      [item[0], item[1]]
+    ],
+    type: 'gauge'
+  },
+  gauge: {
+    label: {
+      format: function(value, ratio) {
+        return value;
+      }
+    },
+    min: gaugeOptions[index].min,
+    max: gaugeOptions[index].max,
+    width: 15,
+    units: ''
+  },
+  color: {
+    pattern: [chartColors[index]]
+  }
+});
+});
+
+</script>
